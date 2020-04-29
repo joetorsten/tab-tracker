@@ -5,7 +5,7 @@
         <v-row align="center" justify="center">
           <v-col cols="12" sm="8" md="4">
             <v-card class="elevation-12">
-              <v-toolbar color="primary" dark flat>
+              <v-toolbar color="indigo" dark flat>
                 <v-toolbar-title>Register</v-toolbar-title>
                 <v-spacer />
                 <v-tooltip bottom>
@@ -53,10 +53,11 @@
                     />
                   </span>
                 </v-form>
+                  <div class="error" v-html="error"></div>
               </v-card-text>
               <v-card-actions>
                 <v-spacer />
-                <v-btn color="primary">Login</v-btn>
+                <v-btn dark @click="register" color="indigo">Register</v-btn>
               </v-card-actions>
             </v-card>
           </v-col>
@@ -67,14 +68,29 @@
 </template>
 
 <script>
+import AuthenticationService from '@/services/AuthenticationService'
 export default {
-  data() {
+  data () {
     return {
-      email: "",
-      password: ""
-    };
+      email: '',
+      password: '',
+      error: null
+
+    }
+  },
+  methods: {
+    async register () {
+      try {
+        await AuthenticationService.register({
+          email: this.email,
+          password: this.password
+        })
+      } catch (error) {
+        this.error = error.response.data.error
+      }
+    }
   }
-};
+}
 </script>
 
 <style>
@@ -83,4 +99,9 @@ export default {
   flex: 1;
   justify-content: space-around;
 }
+
+.error {
+  color: white
+}
+
 </style>
