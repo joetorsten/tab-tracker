@@ -1,11 +1,25 @@
 const {User} = require('../models')
+const jwt =require('jsonwebtoken')
+const config =require('../config/config')
+const bcrypt = require('bcrypt');
+
+
+function jwtSignUser (user) {
+  const ONE_WEEK = 60*60*24*7
+  return jwt.sign(user, config.authentication.jwtSecret, {
+    expiresIn: ONE_WEEK
+  })
+}
 
 module.exports = {
   async register (req,res) {
     try {    
-      const user = await User.create(req.body)
-      res.send(user.toJSON())
-}   catch (err) {
+    const user = await User.create(req.body)
+    const userJson = user.toJSON()
+    res.send({
+      user: userJson,
+      token: jwtSignUser(userJson)
+    })}   catch (err) {
   res.status(400).send({
     error: 'This email-account is already in use.'
   })
@@ -25,17 +39,23 @@ async login (req,res) {
       })
     }
 
-    const isPasswordValid = password === user.password
+    console.log('jetzt: ' + password)
+    console.log('aber: ' + user.password)
+    const a = user.password
+    const isPasswordValid = bcrypt.compareSync(password, a);
+
     if(!isPasswordValid) {
       return res.status(403).send({
-        error: 'Invalid email and/or password'
+        error: 'Invalid email and/or password '
+      })
+    } else {
+      const userJson = user.toJSON()
+      res.send({
+        user: userJson,
+        token: jwtSignUser(userJson)
       })
     }
 
-    const userJson = user.toJSON()
-    res.send({
-      user: userJson
-    })
   }
     catch (err) {
       res.status(500).send({

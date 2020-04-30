@@ -9,7 +9,7 @@
                 <v-toolbar-title>Register</v-toolbar-title>
               </v-toolbar>
               <v-card-text>
-                <v-form>
+                <v-form autocomplete="off">
                   <span class="group pa-2">
                     <v-icon class="icon">mdi-account</v-icon>
                     <v-text-field
