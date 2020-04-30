@@ -12,12 +12,16 @@
 
       <v-spacer></v-spacer>
       <!-- <router-link to="register" activeClass="active" tag="btn"> -->
-        <v-btn route to="register" elevation="0" color="indigo" class="button">
+        <v-btn
+        v-if="!$store.state.isUserLoggedIn"
+        route to="register" elevation="0" color="indigo" class="button">
         Sign Up
       </v-btn>
       <!-- </router-link> -->
       <!-- <router-link to="login" activeClass="active" tag="btn"> -->
-        <v-btn route to="login" elevation="0" color="indigo" class="button">
+        <v-btn
+        v-if="!$store.state.isUserLoggedIn"
+        route to="login" elevation="0" color="indigo" class="button">
         Log In
       </v-btn>
       <!-- </router-link> -->
