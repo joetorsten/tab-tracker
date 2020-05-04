@@ -9,19 +9,35 @@
       <router-link to="/" activeClass="active" tag="btn">
         <v-toolbar-title route to="Home" class="toolbar-title button">Tab-Tracker</v-toolbar-title>
       </router-link>
+      <v-btn
+        route to="/songs" 
+        elevation="0" 
+        color="indigo" 
+        class="button">
+        Browse
+      </v-btn>
 
       <v-spacer></v-spacer>
       <!-- <router-link to="register" activeClass="active" tag="btn"> -->
         <v-btn
         v-if="!$store.state.isUserLoggedIn"
-        route to="register" elevation="0" color="indigo" class="button">
+        route to="/register" elevation="0" color="indigo" class="button">
         Sign Up
+      </v-btn>
+       <v-btn
+        v-if="$store.state.isUserLoggedIn"
+        route to="Home" 
+        elevation="0" 
+        color="indigo" 
+        class="button"
+        @click="logout">
+        Log Out
       </v-btn>
       <!-- </router-link> -->
       <!-- <router-link to="login" activeClass="active" tag="btn"> -->
         <v-btn
         v-if="!$store.state.isUserLoggedIn"
-        route to="login" elevation="0" color="indigo" class="button">
+        route to="/login" elevation="0" color="indigo" class="button">
         Log In
       </v-btn>
       <!-- </router-link> -->
@@ -40,7 +56,15 @@
 
 <script>
 export default {
-  
+  methods: {
+    logout() {
+        this.$store.dispatch('setToken', null)
+        this.$store.dispatch('setUser', null)
+        this.$store.dispatch('logOut')
+        
+
+    }
+  }
 }
 </script>
 
